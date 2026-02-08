@@ -1,0 +1,15 @@
+[Unit]
+Description=StackBot Mastodon Reposter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/stackbot
+EnvironmentFile=/opt/stackbot/.env
+ExecStart=/opt/stackbot/.venv/bin/python /opt/stackbot/main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
