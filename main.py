@@ -127,6 +127,17 @@ def main() -> int:
         if notifications:
             for item in sorted(notifications, key=lambda n: int(n["id"])):
                 state["last_notification_id"] = item["id"]
+                if item["type"] == "follow":
+                    account = item.get("account", {})
+                    acct = account.get("acct")
+                    account_id = account.get("id")
+                    if acct and account_id:
+                        try:
+                            mastodon.account_follow(account_id)
+                            logging.info("Followed back %s", acct)
+                        except (MastodonNetworkError, MastodonAPIError) as exc:
+                            logging.warning("Follow back failed for %s: %s", acct, exc)
+                    continue
                 if item["type"] != "mention":
                     continue
                 status = item.get("status")
