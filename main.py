@@ -10,7 +10,8 @@ from mastodon import Mastodon, MastodonAPIError, MastodonNetworkError
 
 class BoostOnlyFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
-        return record.getMessage().startswith("Boosted ")
+        message = record.getMessage()
+        return message.startswith("Boosted ") or message.startswith("Followed back ")
 
 
 def parse_bool(value: str, default: bool) -> bool:
